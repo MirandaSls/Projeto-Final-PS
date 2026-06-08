@@ -6,15 +6,15 @@
 
 | Visão Geral | Logo |
 |-------------|------|
-| **Hermes** é uma plataforma de gestão para *sellers* Amazon. Unifica conexão de loja (SP-API), publicidade (Amazon Ads), métricas financeiras, precificação automática e assinatura em um único produto. Projeto acadêmico individual de Engenharia de Software — PUC Minas. | ![Logo do Hermes](docs/imagens/logo-hermes.svg) |
+| **Hermes** é uma plataforma de gestão para *sellers* Amazon. Unifica conexão de loja (SP-API), publicidade (Amazon Ads), métricas financeiras, precificação automática e assinatura em um único produto. Projeto acadêmico individual de Engenharia de Software — PUC Minas. | ![Logo do Hermes](docs/imagens/logo-hermes.png) |
 
 ## 🚧 Status do Projeto
 
-![Versão](https://img.shields.io/badge/vers%C3%A3o-1.0-blue)
-![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-green)
-![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet)
-![Next.js](https://img.shields.io/badge/Next.js-frontend-black?logo=next.js)
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Versão](https://img.shields.io/badge/vers%C3%A3o-1.0-1682F3)
+![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-1682F3)
+![.NET](https://img.shields.io/badge/.NET-9.0-1682F3?logo=dotnet&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-frontend-1682F3?logo=next.js&logoColor=white)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-1682F3)
 
 ## 📚 Índice
 
@@ -237,7 +237,7 @@ dotnet test
 
 | Nome | Foto | GitHub | LinkedIn | Gmail |
 |------|------|--------|----------|-------|
-| Arthur Miranda Sales | ![Logo do Hermes](docs/imagens/logo-hermes.svg) | [MirandaSls](https://github.com/MirandaSls) | Não informado | `arthursaleszv@gmail.com` |
+| Arthur Miranda Sales | ![Logo do Hermes](docs/imagens/logo-hermes.png) | [MirandaSls](https://github.com/MirandaSls) | Não informado | `arthursaleszv@gmail.com` |
 
 ## 🤝 Contribuição
 
