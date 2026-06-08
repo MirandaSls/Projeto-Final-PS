@@ -1,0 +1,39 @@
+@startuml c4-container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+title C4 Nivel 2 - Diagrama de Container do Sistema Hermes
+
+Person(seller, "Vendedor Amazon", "Seller assinante")
+
+System_Boundary(hermes, "Hermes") {
+  Container(spa, "Frontend Web", "Next.js", "Portal do seller: dashboards de Ads, conexao de loja, assinatura")
+  Container(ext, "Extensao Chrome", "JS", "Analise de produto, calculadora, tarifas")
+  Container(api, "API Host", "ASP.NET Core 9 (Monolito Modular)", "Controllers + MediatR (CQRS) + 9 modulos + workers internos")
+  Container(outbox, "Worker Outbox", ".NET Worker", "Processa out.OutBoxMessages e republica eventos")
+  Container(keepaw, "Keepa WorkeProcess", ".NET Worker", "CategorieWorker / SellersWorker")
+  ContainerDb(sqlcentral, "SQL Server - Central/Modulos", "SQL Server", "StoresCentral, Usuarios, Produtos, Extensao, Planners, OutBox")
+  ContainerDb(sqltenant, "SQL Server - Tenant por loja", "SQL Server", "Banco-por-loja (orders, products, financeiro, Ads facts)")
+  ContainerDb(redis, "Redis", "Redis", "Cache de extensao/produtos/mineracao")
+  ContainerQueue(rabbit, "RabbitMQ", "RabbitMQ", "Mensageria Products/Keepa")
+}
+
+System_Ext(spapi, "Amazon SP-API", "")
+System_Ext(ads, "Amazon Ads API", "")
+System_Ext(sqs, "AWS SQS", "")
+System_Ext(stripe, "Stripe", "")
+
+Rel(seller, spa, "Usa", "HTTPS")
+Rel(seller, ext, "Usa", "HTTPS")
+Rel(spa, api, "Chama", "JSON/HTTPS")
+Rel(ext, api, "Chama", "JSON/HTTPS")
+Rel(api, sqlcentral, "Le/escreve", "EF Core")
+Rel(api, sqltenant, "Le/escreve por tenant", "EF Core")
+Rel(api, redis, "Cacheia", "")
+Rel(api, rabbit, "Publica/consome", "AMQP")
+Rel(api, outbox, "Persiste eventos", "out.OutBoxMessages")
+Rel(outbox, sqlcentral, "Le eventos", "EF Core")
+Rel(api, spapi, "OAuth/REST")
+Rel(api, ads, "OAuth/REST")
+Rel(sqs, api, "Notificacoes")
+Rel(api, stripe, "REST + webhooks")
+Rel(keepaw, rabbit, "Publica", "AMQP")
+@enduml

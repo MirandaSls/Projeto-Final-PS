@@ -1,0 +1,24 @@
+@startuml ssd-uc02
+title SSD UC-02 - Conectar conta Amazon Ads
+actor Vendedor
+participant ":Sistema Hermes" as Sys
+participant "Amazon Ads API" as ADS
+
+Vendedor -> Sys : iniciarConexaoAds(userId, storeId)
+activate Sys
+Sys --> Vendedor : redirectUrl (consent Amazon Ads)
+deactivate Sys
+
+Vendedor -> ADS : autoriza consentimento
+ADS --> Vendedor : redirect callback (code, state)
+
+Vendedor -> Sys : autorizarAmazonAds(code, state)
+activate Sys
+Sys -> ADS : exchangeAuthorizationCode(code)
+ADS --> Sys : refreshToken
+Sys -> ADS : listProfiles(refreshToken)
+ADS --> Sys : profiles[]
+Sys -> Sys : seleciona profile por marketplace da loja
+Sys --> Vendedor : conexao Ads ativa (AmazonAdsConnection)
+deactivate Sys
+@enduml

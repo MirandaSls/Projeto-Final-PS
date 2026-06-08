@@ -1,0 +1,24 @@
+@startuml estado-conexao-loja
+title Diagrama de Estados - Conexao de Loja (AmazonConects)
+[*] --> Desconectada
+Desconectada --> Conectando : New() / InitiateAmazon
+Conectando --> Conectada : AuthorizeAmazon (tokens validos, IsActive=true)
+Conectando --> Desconectada : falha OAuth
+
+state Conectada {
+  [*] --> NotStarted
+  NotStarted --> SyncingInventory
+  SyncingInventory --> SyncingProducts
+  SyncingProducts --> SyncingOrders
+  SyncingOrders --> SyncingFinancial
+  SyncingFinancial --> ProcessingBacklog
+  ProcessingBacklog --> Ready
+  Ready --> Ready : notificacoes processadas
+}
+
+Conectada --> Expirada : RecordError (>=2 erros) / token expirado
+Expirada --> Conectada : TouchSync (re-auth, zera erros)
+Conectada --> Desconectada : Disconnect() (UC-03)
+Expirada --> Desconectada : Disconnect()
+Desconectada --> [*]
+@enduml

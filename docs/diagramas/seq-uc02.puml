@@ -1,0 +1,31 @@
+@startuml seq-uc02
+title Sequencia de Projeto UC-02 - Conexao Amazon Ads
+actor Vendedor
+participant "AmazonAdsConnectionController" as CTRL
+participant "MediatR" as MED
+participant "AuthorizeAmazonAdsCommandHandler" as H
+participant "IAmazonAdsAuthService" as AUTH
+participant "IAmazonAdsProfilesClient" as PROF
+participant "IAmazonAdsConnectionService" as CONN
+database "StoreCentralDbContext" as DB
+participant "Amazon Ads API" as ADS
+
+Vendedor -> CTRL : GET /Authorize(code, state)
+CTRL -> MED : Send(AuthorizeAmazonAdsCommand)
+MED -> H : Handle(command)
+H -> AUTH : ExchangeAuthorizationCodeAsync(code)
+AUTH -> ADS : POST /auth/o2/token
+ADS --> AUTH : refreshToken
+AUTH --> H : refreshToken
+H -> PROF : ListProfilesAsync(refreshToken)
+PROF -> ADS : GET /v2/profiles
+ADS --> PROF : profiles[]
+PROF --> H : profiles[]
+H -> H : seleciona profile por marketplace da loja
+H -> CONN : UpsertAsync(AmazonAdsConnection)
+CONN -> DB : save AmazonAdsConnection
+DB --> CONN : ok
+H --> MED : resultado
+MED --> CTRL : resultado
+CTRL --> Vendedor : 200 / redirect
+@enduml

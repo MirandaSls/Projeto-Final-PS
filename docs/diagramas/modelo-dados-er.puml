@@ -1,0 +1,152 @@
+@startuml modelo-dados-er
+title Modelo de Dados (ER) - Hermes
+hide circle
+skinparam linetype ortho
+
+' ===== Banco central (StoresCentral) =====
+entity "AmazonConects" as conects {
+  *Id : uniqueidentifier <<PK>>
+  --
+  SellingPartnerId : nvarchar
+  MarketplaceId : nvarchar
+  RefreshToken : nvarchar(2048)
+  AccessToken : nvarchar(2048)
+  IsActive : bit
+  SyncStatus : int
+  ConsecutiveErrorCount : int
+  ' UNIQUE (SellingPartnerId, MarketplaceId)
+}
+
+entity "Stores" as stores {
+  *Id : uniqueidentifier <<PK>>
+  --
+  UserId : uniqueidentifier
+  StoreName : nvarchar
+  ConnectId : uniqueidentifier <<FK>>
+  ReviewSolicitationEnabled : bit
+}
+
+entity "AmazonAdsConnections" as adsconn {
+  *Id : uniqueidentifier <<PK>>
+  --
+  UserId : uniqueidentifier
+  StoreId : uniqueidentifier <<FK>>
+  ProfileId : nvarchar
+  ' UNIQUE (UserId, ProfileId)
+}
+
+entity "StoreTenants" as tenant {
+  *Id : uniqueidentifier <<PK>>
+  --
+  StoreId : uniqueidentifier <<FK>>
+  ConnectionString : nvarchar(2048)
+  IsActive : bit
+}
+
+entity "StoreTaxConfigurations" as tax {
+  *Id : uniqueidentifier <<PK>>
+  --
+  StoreId : uniqueidentifier
+  RegimeTributario : int
+  DAS : decimal(18,4)
+  IsActive : bit
+}
+
+' ===== Banco tenant (por loja) =====
+entity "products" as products {
+  *Id : uniqueidentifier <<PK>>
+  --
+  Asin : nvarchar
+  SellerSku : nvarchar
+  MarketplaceId : nvarchar
+  CurrentPrice : decimal(18,2)
+  ' UNIQUE (Asin, SellerSku, MarketplaceId)
+}
+
+entity "orders" as orders {
+  *Id : uniqueidentifier <<PK>>
+  --
+  AmazonOrderId : nvarchar <<UQ>>
+  Status : nvarchar
+  OrderTotalAmount : decimal(18,2)
+}
+
+entity "order_items" as items {
+  *Id : uniqueidentifier <<PK>>
+  --
+  OrderId : uniqueidentifier <<FK>>
+  ProductId : uniqueidentifier <<FK>>
+  AmazonOrderItemId : nvarchar
+}
+
+entity "order_financial_summaries" as fin {
+  *Id : uniqueidentifier <<PK>>
+  --
+  OrderId : uniqueidentifier <<FK,UQ>>
+  EstimatedProfit : decimal(18,2)
+  RealProfit : decimal(18,2)
+  FinancialStatus : nvarchar
+}
+
+entity "amazon_ads_report_jobs" as adsjob {
+  *Id : uniqueidentifier <<PK>>
+  --
+  StoreId : uniqueidentifier
+  ReportTypeId : nvarchar
+  Status : nvarchar
+}
+
+entity "amazon_ads_advertised_product_daily_facts" as adsfact {
+  *Id : uniqueidentifier <<PK>>
+  --
+  ReportJobId : uniqueidentifier <<FK>>
+  Asin : nvarchar
+  Spend : decimal(18,2)
+  AdSales : decimal(18,2)
+}
+
+' ===== Banco Usuarios =====
+entity "Users" as users {
+  *Id : uniqueidentifier <<PK>>
+  --
+  Email : nvarchar
+  TaxId : nvarchar
+  Status : int
+}
+
+entity "Subscriptions" as subs {
+  *Id : uniqueidentifier <<PK>>
+  --
+  UserId : uniqueidentifier <<FK>>
+  PlanId : uniqueidentifier <<FK>>
+  Status : int
+}
+
+entity "Plans" as plans {
+  *Id : uniqueidentifier <<PK>>
+  --
+  Name : nvarchar
+  Price : decimal(18,2)
+}
+
+' ===== Banco OutBox (schema out) =====
+entity "out.OutBoxMessages" as outbox {
+  *Id : uniqueidentifier <<PK>>
+  --
+  Message : nvarchar(max)
+  Type : nvarchar
+  SavedOn : datetime2
+  ExecutedOn : datetime2
+}
+
+conects ||--o{ stores : ConnectId
+stores ||--o| adsconn : StoreId
+stores ||--|| tenant : StoreId
+stores ||--o{ tax : StoreId
+orders ||--|{ items : OrderId
+products ||--o{ items : ProductId
+orders ||--|| fin : OrderId
+adsjob ||--o{ adsfact : ReportJobId
+users ||--o{ subs : UserId
+plans ||--o{ subs : PlanId
+@enduml

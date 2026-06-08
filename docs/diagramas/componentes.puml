@@ -1,0 +1,70 @@
+@startuml componentes
+title Diagrama de Componentes - API Host (Monolito Modular)
+skinparam componentStyle rectangle
+
+package "Host (Presentation)" {
+  [Controllers] as CTRL
+  [Configs / DI] as CFG
+}
+
+package "Shareds" {
+  [Host.Domain (BaseEntity)] as SD
+  [Host.Contracts (IEventBus / Eventos)] as SC
+  [Host.Infrastructure (UserContext, Behaviours)] as SI
+  [AmazonAds.SDK] as ADSSDK
+  [PagSeguro.SDK] as PGSDK
+  [Keepa.SDK] as KPSDK
+  [MelhorEnvio.SDK] as MESDK
+  [Infosimples.SDK] as INSDK
+}
+
+package "Modulos" {
+  [Usuarios] as M_USERS
+  [Payments] as M_PAY
+  [GatewayPay] as M_GW
+  [Stores] as M_STORES
+  [Products] as M_PROD
+  [ExtensaoAPI] as M_EXT
+  [Planner] as M_PLAN
+  [Keepa] as M_KEEPA
+  [OutBox] as M_OUT
+}
+
+database "SQL Server\n(Central + Modulos)" as DBC
+database "SQL Server\n(Tenant por loja)" as DBT
+database "Redis" as REDIS
+queue "RabbitMQ" as RMQ
+
+CTRL --> M_USERS : MediatR Send
+CTRL --> M_PAY : MediatR Send
+CTRL --> M_GW : MediatR Send
+CTRL --> M_STORES : MediatR Send
+CTRL --> M_PROD : MediatR Send
+CTRL --> M_EXT : MediatR Send
+CTRL --> M_PLAN : MediatR Send
+CFG ..> SI
+CFG ..> SC
+
+M_STORES --> ADSSDK
+M_GW --> PGSDK
+M_KEEPA --> KPSDK
+M_EXT --> MESDK
+M_EXT --> INSDK
+
+M_USERS --> DBC
+M_PAY --> DBC
+M_PROD --> DBC
+M_EXT --> DBC
+M_PLAN --> DBC
+M_STORES --> DBC : central (AmazonConects, Stores)
+M_STORES --> DBT : tenant (orders, facts)
+M_EXT --> REDIS
+M_PROD --> REDIS
+M_PROD --> RMQ
+M_KEEPA --> RMQ
+
+SC <.. M_OUT : persiste eventos
+M_OUT --> DBC : out.OutBoxMessages
+M_USERS ..> SD
+M_STORES ..> SD
+@enduml

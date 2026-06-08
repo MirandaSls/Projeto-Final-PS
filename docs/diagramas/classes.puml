@@ -1,0 +1,164 @@
+@startuml classes
+title Diagrama de Classes - Dominio Hermes (entidades-chave)
+skinparam classAttributeIconSize 0
+
+abstract class BaseEntity {
+  +Id : Guid
+  +CreatedAt : DateTime
+  +CreatedBy : string
+  +UpdatedAt : DateTime
+  +UpdateBy : string
+  +RowVersion : byte[]
+}
+
+class AmazonConects {
+  +Provider : string
+  +SellingPartnerId : string
+  +RefreshToken : string
+  +AccessToken : string
+  +MwsAuthToken : string
+  +MarketplaceId : string
+  +IsActive : bool
+  +SyncStatus : SyncStatus
+  +ConsecutiveErrorCount : int
+  --
+  +New() : AmazonConects
+  +Disconnect()
+  +RecordError(msg)
+  +TouchSync()
+  +TransitionSyncStatus(s)
+}
+
+class Stores {
+  +UserId : Guid
+  +StoreName : string
+  +ConnectId : Guid
+  +ReviewSolicitationEnabled : bool
+  --
+  +New() : Stores
+}
+
+class AmazonAdsConnection {
+  +UserId : Guid
+  +StoreId : Guid
+  +ProfileId : string
+  +RefreshToken : string
+  +CountryCode : string
+  +CurrencyCode : string
+  +IsActive : bool
+}
+
+class StoreTenant {
+  +StoreName : string
+  +TenantKey : string
+  +ConnectionString : string
+  +StoreId : Guid
+  +IsActive : bool
+}
+
+class Order {
+  +AmazonOrderId : string
+  +Status : string
+  +FulfillmentChannel : string
+  +OrderTotalAmount : decimal
+  +PurchaseDateUtc : DateTime
+}
+
+class OrderItem {
+  +AmazonOrderItemId : string
+  +Asin : string
+  +Quantity : int
+  +ItemPrice : decimal
+}
+
+class OrderFinancialSummary {
+  +EstimatedRevenue : decimal
+  +EstimatedProfit : decimal
+  +RealRevenue : decimal
+  +RealProfit : decimal
+  +FinancialStatus : string
+}
+
+class Product {
+  +Asin : string
+  +SellerSku : string
+  +MarketplaceId : string
+  +Title : string
+  +CurrentPrice : decimal
+}
+
+class PricingStrategy {
+  +StrategyType : string
+  +IsActive : bool
+}
+
+class AmazonAdsReportJob {
+  +ReportTypeId : string
+  +Status : string
+  +NextPollAtUtc : DateTime
+}
+
+class Users {
+  +Name : string
+  +Email : string
+  +TaxId : string
+  +Status : UserStatus
+}
+
+class Subscription {
+  +Provider : string
+  +Status : StatusSubscription
+  +ExpirationDate : DateTime
+  +AutoRenew : bool
+  --
+  +New()
+  +SetStatus(s)
+  +Deactivate()
+  +Reactivate()
+}
+
+class Plans {
+  +Name : string
+  +Price : decimal
+}
+
+class PaymentSubscription {
+  +Provider : string
+  +Status : PaymentSubscriptionStatus
+  +CurrentPeriodEndUtc : DateTime
+  +CancelAtPeriodEnd : bool
+  --
+  +CreateStripe()
+  +MarkPaid()
+  +MarkTrialing()
+  +Cancel()
+}
+
+class BillingAccount {
+  +Type : BillingAccountType
+  +Status : BillingAccountStatus
+}
+
+class OutBoxMessage {
+  +Message : string
+  +Type : string
+  +SavedOn : DateTime
+  +ExecutedOn : DateTime
+}
+
+BaseEntity <|-- AmazonConects
+BaseEntity <|-- Stores
+BaseEntity <|-- AmazonAdsConnection
+BaseEntity <|-- StoreTenant
+BaseEntity <|-- Subscription
+
+Stores "1" --> "1" AmazonConects : ConnectId
+Stores "1" --> "0..1" AmazonAdsConnection : StoreId
+Stores "1" --> "1" StoreTenant : StoreId
+Order "1" *-- "many" OrderItem
+Order "1" --> "1" OrderFinancialSummary
+OrderItem "many" --> "0..1" Product
+Users "1" --> "many" Subscription
+Subscription "many" --> "1" Plans
+BillingAccount "1" --> "many" PaymentSubscription
+@enduml

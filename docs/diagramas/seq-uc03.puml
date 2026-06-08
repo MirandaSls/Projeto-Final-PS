@@ -1,0 +1,26 @@
+@startuml seq-uc03
+title Sequencia de Projeto UC-03 - Desconectar loja
+actor Vendedor
+participant "StoreConnectionController" as CTRL
+participant "MediatR" as MED
+participant "DisconnectStoreCommandHandler" as H
+participant "AmazonConects" as AGG
+database "StoreCentralDbContext" as DB
+participant "IAmazonNotificationService" as NOTIF
+participant "Amazon SP-API" as SPAPI
+
+Vendedor -> CTRL : PATCH /{storeId}/Disconnect
+CTRL -> MED : Send(DisconnectStoreCommand)
+MED -> H : Handle(command)
+H -> DB : busca Stores + AmazonConects por storeId
+DB --> H : conexao
+H -> AGG : Disconnect()
+note right of AGG : IsActive=false\nlimpa tokens
+H -> NOTIF : cancela subscriptions (best-effort)
+NOTIF -> SPAPI : delete subscriptions
+SPAPI --> NOTIF : ok
+H -> DB : SaveChanges
+H --> MED : ok
+MED --> CTRL : ok
+CTRL --> Vendedor : 200 OK
+@enduml

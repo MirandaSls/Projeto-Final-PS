@@ -1,0 +1,22 @@
+# Segredos / ambiente
+.env
+.env.*
+*.secret
+appsettings.*.local.json
+
+# Build .NET
+bin/
+obj/
+
+# Node / frontend
+node_modules/
+
+# Render PlantUML
+docs/diagramas/out/
+*.png
+*.svg
+
+# Editor
+.vs/
+.idea/
+.DS_Store

@@ -1,0 +1,15 @@
+@startuml estado-campanha
+title Diagrama de Estados - Campanha Amazon Ads
+[*] --> Rascunho : monta campanha (frontend)
+Rascunho --> Ativa : CreateCampaign (State=ENABLED)
+Ativa --> Pausada : UpdateCampaign (State=PAUSED)
+Pausada --> Ativa : UpdateCampaign (State=ENABLED)
+Ativa --> Encerrada : DeleteCampaign (State=ARCHIVED)
+Pausada --> Encerrada : DeleteCampaign (State=ARCHIVED)
+Encerrada --> [*]
+
+note right of Ativa
+  Estrategias automaticas (UC-07)
+  ajustam bids enquanto ENABLED
+end note
+@enduml

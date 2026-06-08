@@ -1,0 +1,26 @@
+@startuml comunicacao-uc01
+title Diagrama de Comunicacao UC-01 - Conexao Amazon SP-API
+left to right direction
+
+actor Vendedor as V
+object "StoreConnectionController" as CTRL
+object "AuthorizeAmazonCommandHandler" as H
+object "IAmazonOAuthService" as OAUTH
+object "IAmazonConnectService" as CONN
+object "IAmazonSellerApiService" as SELLER
+object "IStoreService" as STORE
+object "IAmazonNotificationService" as NOTIF
+database "StoreCentralDbContext" as DB
+
+V --> CTRL : 1: AuthorizeAmazon(code, state)
+CTRL --> H : 2: Send(AuthorizeAmazonCommand)
+H --> OAUTH : 3: ExchangeAuthorizationCode(code)
+H --> CONN : 4: UpsertConnection() -> connectId
+CONN --> DB : 4.1: save AmazonConects
+H --> SELLER : 5: GetSellerInfo(refreshToken)
+H --> STORE : 6: CreateAsync(userId, connectId)
+STORE --> DB : 6.1: save Stores
+H --> NOTIF : 7: EnsureSubscription(ORDER_CHANGE)
+H --> CTRL : 8: redirectUrl
+CTRL --> V : 9: 302 Redirect
+@enduml

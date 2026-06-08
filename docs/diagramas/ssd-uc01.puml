@@ -1,0 +1,25 @@
+@startuml ssd-uc01
+title SSD UC-01 - Conectar loja Amazon (OAuth SP-API)
+actor Vendedor
+participant ":Sistema Hermes" as Sys
+participant "Amazon SP-API" as SPAPI
+
+Vendedor -> Sys : iniciarConexaoAmazon(userId)
+activate Sys
+Sys --> Vendedor : redirectUrl (Seller Central consent)
+deactivate Sys
+
+Vendedor -> SPAPI : autoriza consentimento
+SPAPI --> Vendedor : redirect callback (spapi_oauth_code, state)
+
+Vendedor -> Sys : autorizarAmazon(code, sellingPartnerId, mwsAuthToken, state)
+activate Sys
+Sys -> SPAPI : exchangeAuthorizationCode(code)
+SPAPI --> Sys : refreshToken, accessToken
+Sys -> SPAPI : getSellerInfo(refreshToken)
+SPAPI --> Sys : sellerInfo
+Sys -> SPAPI : ensureSubscription(ORDER_CHANGE)
+SPAPI --> Sys : subscriptionId
+Sys --> Vendedor : redirect https://portal.hermess.app
+deactivate Sys
+@enduml

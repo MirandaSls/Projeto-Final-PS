@@ -1,0 +1,43 @@
+@startuml implantacao
+title Diagrama de Implantacao - Hermes (Docker / Swarm)
+skinparam node {
+  BackgroundColor #FDFDFD
+}
+
+node "Cluster Docker Swarm" {
+  node "Servico: hosts" as N_API {
+    artifact "API Host\nASP.NET Core 9\n(8080/8081)\n2 vCPU / 1 GB" as A_API
+    artifact "Workers internos\n(OrderSync, Pricing,\nAmazonAdsReport, ...)" as A_WRK
+  }
+  node "Servico: hosts_outbox_workeprocess" as N_OUT {
+    artifact "Outbox Worker\n1 vCPU / 512 MB" as A_OUT
+  }
+  node "Servico: keepa workeprocess" as N_KEEPA {
+    artifact "Keepa WorkeProcess" as A_KEEPA
+  }
+  node "Servico: redis" as N_REDIS {
+    artifact "Redis (appendonly)\n6379\n0.5 vCPU / 512 MB" as A_REDIS
+  }
+  node "Servico: rabbitmq" as N_RMQ {
+    artifact "RabbitMQ" as A_RMQ
+  }
+}
+
+node "SQL Server (externo)" as N_SQL {
+  database "Bancos: StoresCentral,\nUsuarios, Produtos, Extensao,\nPlanners, OutBox + bancos tenant" as DB
+}
+
+cloud "APIs externas" as CLOUD {
+  artifact "Amazon SP-API / Ads"
+  artifact "AWS SQS"
+  artifact "Stripe / Gateways"
+}
+
+A_API --> A_REDIS : TCP 6379
+A_API --> A_RMQ : AMQP
+A_API --> DB : TCP 11433 (EF Core)
+A_OUT --> DB
+A_KEEPA --> A_RMQ
+A_API --> CLOUD : HTTPS
+A_WRK --> CLOUD : HTTPS
+@enduml

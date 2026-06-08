@@ -1,0 +1,39 @@
+@startuml seq-uc01
+title Sequencia de Projeto UC-01 - Conexao Amazon SP-API
+actor Vendedor
+participant "StoreConnectionController" as CTRL
+participant "MediatR" as MED
+participant "AuthorizeAmazonCommandHandler" as H
+participant "IAmazonOAuthService" as OAUTH
+participant "IAmazonConnectService" as CONN
+participant "IAmazonSellerApiService" as SELLER
+participant "IStoreService" as STORE
+participant "IAmazonNotificationService" as NOTIF
+database "StoreCentralDbContext" as DB
+participant "Amazon SP-API" as SPAPI
+
+Vendedor -> CTRL : GET /AuthorizeAmazon(code, state)
+CTRL -> CTRL : ParseState(state) -> userId
+CTRL -> MED : Send(AuthorizeAmazonCommand)
+MED -> H : Handle(command)
+H -> OAUTH : ExchangeAuthorizationCodeAsync(code)
+OAUTH -> SPAPI : POST /auth/o2/token
+SPAPI --> OAUTH : tokens
+OAUTH --> H : refreshToken, accessToken
+H -> CONN : UpsertConnectionAsync(...)
+CONN -> DB : save AmazonConects
+DB --> CONN : connectId
+CONN --> H : connectId
+H -> SELLER : GetSellerInfoAsync(refreshToken)
+SELLER -> SPAPI : GET seller info
+SPAPI --> SELLER : sellerInfo
+SELLER --> H : sellerInfo
+H -> STORE : CreateAsync(userId, storeName, connectId)
+STORE -> DB : save Stores
+H -> NOTIF : EnsureSubscriptionAsync(ORDER_CHANGE)
+NOTIF -> SPAPI : create subscription
+SPAPI --> NOTIF : subscriptionId
+H --> MED : "https://portal.hermess.app"
+MED --> CTRL : redirectUrl
+CTRL --> Vendedor : 302 Redirect
+@enduml

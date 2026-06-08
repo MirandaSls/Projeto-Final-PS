@@ -1,0 +1,35 @@
+@startuml c4-contexto
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+title C4 Nivel 1 - Diagrama de Contexto do Sistema Hermes
+
+Person(seller, "Vendedor Amazon", "Seller assinante que gere Ads, vendas e operacao da loja")
+Person(admin, "Administrador de Conta", "Gere billing account e assinaturas")
+
+System(hermes, "Hermes", "Plataforma de gestao para sellers Amazon: Ads, metricas, sincronizacao SP-API, assinatura e automacao")
+
+System_Ext(spapi, "Amazon SP-API", "Pedidos, inventario, financeiro, listing, notificacoes")
+System_Ext(ads, "Amazon Ads API", "Campanhas, keywords, relatorios de publicidade")
+System_Ext(sqs, "AWS SQS / EventBridge", "Notificacoes assincronas da Amazon")
+System_Ext(stripe, "Stripe", "Pagamentos e assinaturas")
+System_Ext(legacy, "PagSeguro / Eduzz / Kiwify", "Gateways de pagamento legados")
+System_Ext(keepa, "Keepa", "Historico e precos de mercado")
+System_Ext(melhorenvio, "Melhor Envio", "Calculo de frete")
+System_Ext(inpi, "Infosimples / INPI", "Consulta de marca/trademark")
+System_Ext(azure, "Azure AI", "Vision / Document Intelligence")
+System_Ext(brevo, "Brevo", "Envio de e-mail")
+System_Ext(wapi, "W-API", "Notificacoes WhatsApp")
+
+Rel(seller, hermes, "Usa", "HTTPS / Extensao Chrome")
+Rel(admin, hermes, "Administra", "HTTPS")
+Rel(hermes, spapi, "OAuth, le pedidos/financeiro, assina notificacoes")
+Rel(hermes, ads, "OAuth, cria campanhas, baixa relatorios")
+Rel(sqs, hermes, "Entrega notificacoes SP-API")
+Rel(hermes, stripe, "Cria assinaturas; recebe webhooks")
+Rel(hermes, legacy, "Recebe webhooks de assinatura")
+Rel(hermes, keepa, "Consulta historico de produtos")
+Rel(hermes, melhorenvio, "Calcula frete")
+Rel(hermes, inpi, "Consulta marca")
+Rel(hermes, azure, "Processa catalogos de fornecedor")
+Rel(hermes, brevo, "Envia e-mails transacionais")
+Rel(hermes, wapi, "Envia notificacoes WhatsApp")
+@enduml

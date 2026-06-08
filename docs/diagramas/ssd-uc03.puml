@@ -1,0 +1,15 @@
+@startuml ssd-uc03
+title SSD UC-03 - Desconectar loja
+actor Vendedor
+participant ":Sistema Hermes" as Sys
+participant "Amazon SP-API" as SPAPI
+
+Vendedor -> Sys : desconectarLoja(storeId)
+activate Sys
+Sys -> Sys : localiza AmazonConects da loja
+Sys -> Sys : Disconnect() (IsActive=false, limpa tokens)
+Sys -> SPAPI : cancela subscriptions de notificacao (best-effort)
+SPAPI --> Sys : ok
+Sys --> Vendedor : loja desconectada
+deactivate Sys
+@enduml
