@@ -139,12 +139,12 @@ ConnectionStrings__OutBox="Server=...;Database=OutBox;..."
 Redis__ConnectionString="redis:6379"
 RabbitMQ__Host="rabbitmq"
 
-# Integrações (preencher com suas credenciais)
-Amazon__ClientId=...
-AmazonAds__ClientId=...
-Stripe__SecretKey=...
-Keepa__ApiKey=...
-Jwt__Secret=...
+# Integrações externas
+Amazon__ClientId="***"
+AmazonAds__ClientId="***"
+Stripe__SecretKey="***"
+Keepa__ApiKey="***"
+Jwt__Secret="***"
 ```
 
 ### Dependências e execução (backend)
@@ -237,7 +237,7 @@ dotnet test
 
 | Nome | Foto | GitHub | LinkedIn | Gmail |
 |------|------|--------|----------|-------|
-| Arthur Miranda Sales | ![Logo do Hermes](docs/imagens/logo-hermes.png) | [MirandaSls](https://github.com/MirandaSls) | Não informado | `arthursaleszv@gmail.com` |
+| Arthur Miranda Sales | ![Foto de Arthur Miranda Sales](docs/imagens/arthur-miranda-sales.jpeg) | [MirandaSls](https://github.com/MirandaSls) | Não informado | `arthursaleszv@gmail.com` |
 
 ## 🤝 Contribuição
 
