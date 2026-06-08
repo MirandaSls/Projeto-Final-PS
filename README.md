@@ -6,7 +6,7 @@
 
 | Visão Geral | Logo |
 |-------------|------|
-| **Hermes** é uma plataforma de gestão para *sellers* Amazon. Unifica conexão de loja (SP-API), publicidade (Amazon Ads), métricas financeiras, precificação automática e assinatura em um único produto. Projeto acadêmico individual de Engenharia de Software — PUC Minas. | ![Logo do Hermes](docs/imagens/logo-hermes.png) |
+| **Hermes** é uma plataforma de gestão para *sellers* Amazon. Unifica conexão de loja (SP-API), publicidade (Amazon Ads), métricas financeiras, precificação automática e assinatura em um único produto. Projeto acadêmico individual de Engenharia de Software — PUC Minas. | <img src="docs/imagens/logo-hermes.png" alt="Logo do Hermes" width="180"> |
 
 ## 🚧 Status do Projeto
 
