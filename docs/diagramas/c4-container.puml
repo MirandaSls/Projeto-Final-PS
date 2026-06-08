@@ -5,7 +5,8 @@ title C4 Nivel 2 - Diagrama de Container do Sistema Hermes
 Person(seller, "Vendedor Amazon", "Seller assinante")
 
 System_Boundary(hermes, "Hermes") {
-  Container(spa, "Portal Web", "Next.js 15 + React 19 + TypeScript + pnpm", "Portal do seller: dashboards de Ads, conexao de loja, assinatura")
+  Container(spa, "Portal Web UI", "Next.js 15 + React 19 + TypeScript + pnpm", "Interface do seller: dashboards de Ads, conexao de loja, assinatura")
+  Container(bff, "BFF do Portal", "Next.js API Routes + NextAuth", "Rotas /api/* validam sessao, ocultam URL interna e adicionam JWT server-side")
   Container(ext, "Extensao Chrome", "React 19 + TypeScript + Vite 6 + pnpm/Turbo", "Side panel, graficos na pagina de produto, cards de busca, calculadora e tarifas")
   Container(api, "API Host", "ASP.NET Core 9 (Monolito Modular)", "Controllers + MediatR (CQRS) + 9 modulos + workers internos")
   Container(outbox, "Worker Outbox", ".NET Worker", "Processa out.OutBoxMessages e republica eventos")
@@ -23,7 +24,8 @@ System_Ext(stripe, "Stripe", "")
 
 Rel(seller, spa, "Usa", "HTTPS")
 Rel(seller, ext, "Usa", "HTTPS")
-Rel(spa, api, "Chama", "JSON/HTTPS")
+Rel(spa, bff, "Chama", "JSON/HTTPS /api/*")
+Rel(bff, api, "Proxy autenticado", "JSON/HTTPS + Bearer JWT")
 Rel(ext, api, "Chama", "JSON/HTTPS")
 Rel(api, sqlcentral, "Le/escreve", "EF Core")
 Rel(api, sqltenant, "Le/escreve por tenant", "EF Core")

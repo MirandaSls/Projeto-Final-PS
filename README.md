@@ -108,7 +108,11 @@ O Hermes é um **Monólito Modular** com **Clean Architecture** por módulo, **C
 (MediatR) e padrão **Outbox** para eventos de integração. São nove módulos
 (`Usuarios`, `Payments`, `GatewayPay`, `Stores`, `Products`, `ExtensaoAPI`, `Planner`,
 `Keepa`, `OutBox`) com bancos separados, mais uma estratégia **multi-tenant
-banco-por-loja** para os dados operacionais de cada vendedor.
+banco-por-loja** para os dados operacionais de cada vendedor. No front-end do Portal,
+o Next.js também atua como **BFF (Backend for Frontend)**: a interface chama rotas
+`/api/*` do próprio Portal, que validam a sessão, anexam o token no servidor e
+repassam a chamada para a API Host, evitando expor a URL interna e regras de
+integração diretamente no navegador.
 
 **Exemplos de diagramas** (fontes em PlantUML em [`docs/diagramas/`](docs/diagramas) e imagens em [`docs/imagens/`](docs/imagens)):
 

@@ -19,7 +19,7 @@ System_Ext(azure, "Azure AI", "Vision / Document Intelligence")
 System_Ext(brevo, "Brevo", "Envio de e-mail")
 System_Ext(wapi, "W-API", "Notificacoes WhatsApp")
 
-Rel(seller, hermes, "Usa", "HTTPS / Extensao Chrome")
+Rel(seller, hermes, "Usa", "HTTPS / Portal Web com BFF / Extensao Chrome")
 Rel(admin, hermes, "Administra", "HTTPS")
 Rel(hermes, spapi, "OAuth, le pedidos/financeiro, assina notificacoes")
 Rel(hermes, ads, "OAuth, cria campanhas, baixa relatorios")

@@ -1,6 +1,13 @@
 @startuml componentes
-title Diagrama de Componentes - API Host (Monolito Modular)
+title Diagrama de Componentes - Portal BFF + API Host
 skinparam componentStyle rectangle
+
+package "Portal Web (Next.js)" {
+  [React UI] as P_UI
+  [BFF_ENDPOINTS (/api/*)] as P_ENDPOINTS
+  [API Routes] as P_ROUTES
+  [NextAuth / Session] as P_AUTH
+}
 
 package "Host (Presentation)" {
   [Controllers] as CTRL
@@ -34,6 +41,11 @@ database "SQL Server\n(Central + Modulos)" as DBC
 database "SQL Server\n(Tenant por loja)" as DBT
 database "Redis" as REDIS
 queue "RabbitMQ" as RMQ
+
+P_UI --> P_ENDPOINTS : fetch /api/*
+P_ENDPOINTS --> P_ROUTES
+P_ROUTES --> P_AUTH : valida sessao
+P_ROUTES --> CTRL : HTTPS + Bearer JWT
 
 CTRL --> M_USERS : MediatR Send
 CTRL --> M_PAY : MediatR Send

@@ -331,6 +331,10 @@ O Hermes adota **Monólito Modular + Clean Architecture + CQRS + Outbox**.
   (`IEventBus` → `InMemoryEventBus`) na mesma transação do dado, e republicados de forma
   assíncrona pelo `OutBoxWorker` via `IMediator.Publish`. Garante entrega confiável de
   eventos (atomicidade dado+evento) sem acoplar os módulos a um broker síncrono.
+- **BFF no Portal Web:** o front-end Next.js expõe rotas internas `/api/*` mapeadas por
+  `BFF_ENDPOINTS`. Essas rotas executam no servidor, validam a sessão com NextAuth,
+  adicionam o token JWT e encaminham as requisições para a API Host. Assim, a interface
+  React não precisa expor diretamente a URL interna da API nem detalhes de autenticação.
 
 #### C4 — Nível 1 (Contexto)
 
@@ -356,7 +360,7 @@ System_Ext(azure, "Azure AI", "Vision / Document Intelligence")
 System_Ext(brevo, "Brevo", "Envio de e-mail")
 System_Ext(wapi, "W-API", "Notificacoes WhatsApp")
 
-Rel(seller, hermes, "Usa", "HTTPS / Extensao Chrome")
+Rel(seller, hermes, "Usa", "HTTPS / Portal Web com BFF / Extensao Chrome")
 Rel(admin, hermes, "Administra", "HTTPS")
 Rel(hermes, spapi, "OAuth, le pedidos/financeiro, assina notificacoes")
 Rel(hermes, ads, "OAuth, cria campanhas, baixa relatorios")
@@ -382,7 +386,8 @@ title C4 Nivel 2 - Diagrama de Container do Sistema Hermes
 Person(seller, "Vendedor Amazon", "Seller assinante")
 
 System_Boundary(hermes, "Hermes") {
-  Container(spa, "Portal Web", "Next.js 15 + React 19 + TypeScript + pnpm", "Portal do seller: dashboards de Ads, conexao de loja, assinatura")
+  Container(spa, "Portal Web UI", "Next.js 15 + React 19 + TypeScript + pnpm", "Interface do seller: dashboards de Ads, conexao de loja, assinatura")
+  Container(bff, "BFF do Portal", "Next.js API Routes + NextAuth", "Rotas /api/* validam sessao, ocultam URL interna e adicionam JWT server-side")
   Container(ext, "Extensao Chrome", "React 19 + TypeScript + Vite 6 + pnpm/Turbo", "Side panel, graficos na pagina de produto, cards de busca, calculadora e tarifas")
   Container(api, "API Host", "ASP.NET Core 9 (Monolito Modular)", "Controllers + MediatR (CQRS) + 9 modulos + workers internos")
   Container(outbox, "Worker Outbox", ".NET Worker", "Processa out.OutBoxMessages e republica eventos")
@@ -400,7 +405,8 @@ System_Ext(stripe, "Stripe", "")
 
 Rel(seller, spa, "Usa", "HTTPS")
 Rel(seller, ext, "Usa", "HTTPS")
-Rel(spa, api, "Chama", "JSON/HTTPS")
+Rel(spa, bff, "Chama", "JSON/HTTPS /api/*")
+Rel(bff, api, "Proxy autenticado", "JSON/HTTPS + Bearer JWT")
 Rel(ext, api, "Chama", "JSON/HTTPS")
 Rel(api, sqlcentral, "Le/escreve", "EF Core")
 Rel(api, sqltenant, "Le/escreve por tenant", "EF Core")
@@ -422,8 +428,15 @@ Rel(keepaw, rabbit, "Publica", "AMQP")
 
 ```plantuml
 @startuml componentes
-title Diagrama de Componentes - API Host (Monolito Modular)
+title Diagrama de Componentes - Portal BFF + API Host
 skinparam componentStyle rectangle
+
+package "Portal Web (Next.js)" {
+  [React UI] as P_UI
+  [BFF_ENDPOINTS (/api/*)] as P_ENDPOINTS
+  [API Routes] as P_ROUTES
+  [NextAuth / Session] as P_AUTH
+}
 
 package "Host (Presentation)" {
   [Controllers] as CTRL
@@ -457,6 +470,11 @@ database "SQL Server\n(Central + Modulos)" as DBC
 database "SQL Server\n(Tenant por loja)" as DBT
 database "Redis" as REDIS
 queue "RabbitMQ" as RMQ
+
+P_UI --> P_ENDPOINTS : fetch /api/*
+P_ENDPOINTS --> P_ROUTES
+P_ROUTES --> P_AUTH : valida sessao
+P_ROUTES --> CTRL : HTTPS + Bearer JWT
 
 CTRL --> M_USERS : MediatR Send
 CTRL --> M_PAY : MediatR Send
