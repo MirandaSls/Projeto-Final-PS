@@ -253,3 +253,11 @@ Engenharia de Software — PUC Minas. Agradecimento especial ao Prof. Dr. João 
 ## 📄 Licença
 
 Distribuído sob a licença **MIT**.
+
+## Observação
+
+Este repositório foi criado exclusivamente para fins acadêmicos, contendo a documentação,
+os diagramas e a arquitetura do projeto. O repositório original da aplicação não foi
+utilizado porque o Hermes é um sistema atualmente em operação; torná-lo público poderia
+expor código-fonte, regras internas de negócio, integrações e detalhes sensíveis de
+segurança.
