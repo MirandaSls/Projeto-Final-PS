@@ -237,7 +237,7 @@ dotnet test
 
 | Nome | Foto | GitHub | LinkedIn | Gmail |
 |------|------|--------|----------|-------|
-| Arthur Miranda Sales | ![Foto de Arthur Miranda Sales](docs/imagens/arthur-miranda-sales.jpeg) | [MirandaSls](https://github.com/MirandaSls) | Não informado | `arthursaleszv@gmail.com` |
+| Arthur Miranda Sales | <img src="docs/imagens/arthur-miranda-sales.jpeg" alt="Foto de Arthur Miranda Sales" width="120"> | [MirandaSls](https://github.com/MirandaSls) | Não informado | `arthursaleszv@gmail.com` |
 
 ## 🤝 Contribuição
 
