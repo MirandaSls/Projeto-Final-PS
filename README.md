@@ -14,6 +14,7 @@
 ![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-1682F3)
 ![.NET](https://img.shields.io/badge/.NET-9.0-1682F3?logo=dotnet&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-frontend-1682F3?logo=next.js&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-workspaces-1682F3?logo=pnpm&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-1682F3)
 
 ## 📚 Índice
@@ -74,8 +75,12 @@ APIs da Amazon.
 ## 🛠 Tecnologias Utilizadas
 
 **Front-end**
-- Next.js (portal do seller)
-- Extensão Chrome (JavaScript)
+- Portal Web: Next.js 15, React 19, TypeScript, Tailwind CSS, shadcn/ui, Radix UI,
+  React Hook Form, TanStack Table, Recharts, SignalR, PostHog e Vitest.
+- Extensão Chrome: monorepo pnpm/Turbo com React 19, TypeScript, Vite 6, Tailwind CSS,
+  Radix UI, Zustand, TanStack Query, Recharts, Vitest e pacotes `chrome-extension`,
+  `pages/side-panel`, `pages/product-page-charts` e `pages/search-product-cards`.
+- Gerenciador de pacotes: pnpm.
 
 **Back-end**
 - .NET 9 / ASP.NET Core Web API
@@ -120,7 +125,8 @@ banco-por-loja** para os dados operacionais de cada vendedor.
 
 ### Pré-requisitos
 - [.NET SDK 9](https://dotnet.microsoft.com/)
-- [Node.js 20+](https://nodejs.org/) (frontend Next.js)
+- [Node.js 22.12+](https://nodejs.org/) (Portal e Extension)
+- [pnpm 9.15+](https://pnpm.io/) (gerenciador usado pelos frontends)
 - [Docker](https://www.docker.com/) e Docker Compose
 - Acesso a uma instância de **SQL Server**, **Redis** e **RabbitMQ**
 
@@ -156,12 +162,18 @@ dotnet run --project Host
 # Swagger: https://localhost:8081/swagger
 ```
 
-### Frontend (Next.js)
+### Frontend
 
 ```bash
-cd frontend
-npm install
-npm run dev
+# Portal Web (Next.js)
+cd Portal
+pnpm install --frozen-lockfile
+pnpm dev
+
+# Extensão Chrome (pnpm workspace + Turbo + Vite)
+cd Extension
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
 ### docker-compose
@@ -198,7 +210,8 @@ docker stack deploy -c docker-compose.yml hermes
 │   ├── Keepa/                    #   integração Keepa (workers)
 │   └── OutBox/                   #   Outbox + worker dedicado
 ├── Shareds/                      # transversais: Domain, Contracts, Infrastructure, SDKs
-├── frontend/                     # portal Next.js
+├── Portal/                       # frontend web Next.js 15 + React 19 + pnpm
+├── Extension/                    # extensão Chrome: pnpm workspace + Turbo + Vite
 ├── docs/
 │   ├── Documentacao-de-Projeto.md
 │   ├── diagramas/                # fontes .puml (C4, casos de uso, sequência, estados, ER...)

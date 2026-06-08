@@ -5,8 +5,8 @@ title C4 Nivel 2 - Diagrama de Container do Sistema Hermes
 Person(seller, "Vendedor Amazon", "Seller assinante")
 
 System_Boundary(hermes, "Hermes") {
-  Container(spa, "Frontend Web", "Next.js", "Portal do seller: dashboards de Ads, conexao de loja, assinatura")
-  Container(ext, "Extensao Chrome", "JS", "Analise de produto, calculadora, tarifas")
+  Container(spa, "Portal Web", "Next.js 15 + React 19 + TypeScript + pnpm", "Portal do seller: dashboards de Ads, conexao de loja, assinatura")
+  Container(ext, "Extensao Chrome", "React 19 + TypeScript + Vite 6 + pnpm/Turbo", "Side panel, graficos na pagina de produto, cards de busca, calculadora e tarifas")
   Container(api, "API Host", "ASP.NET Core 9 (Monolito Modular)", "Controllers + MediatR (CQRS) + 9 modulos + workers internos")
   Container(outbox, "Worker Outbox", ".NET Worker", "Processa out.OutBoxMessages e republica eventos")
   Container(keepaw, "Keepa WorkeProcess", ".NET Worker", "CategorieWorker / SellersWorker")
