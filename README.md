@@ -1,8 +1,12 @@
-# 🏷️ Hermes
+# 🏷️ Hermes 👨‍💻
 
 > Plataforma de gestão para vendedores Amazon: conecta a loja via SP-API e Amazon Ads,
 > sincroniza pedidos/financeiro, calcula margens, automatiza precificação e campanhas, e
 > gere assinaturas — tudo em um monólito modular .NET com extensão Chrome.
+
+| Visão Geral | Logo |
+|-------------|------|
+| **Hermes** é uma plataforma de gestão para *sellers* Amazon. Unifica conexão de loja (SP-API), publicidade (Amazon Ads), métricas financeiras, precificação automática e assinatura em um único produto. Projeto acadêmico individual de Engenharia de Software — PUC Minas. | `<placeholder — logo do projeto>` |
 
 ## 🚧 Status do Projeto
 
@@ -101,13 +105,16 @@ O Hermes é um **Monólito Modular** com **Clean Architecture** por módulo, **C
 `Keepa`, `OutBox`) com bancos separados, mais uma estratégia **multi-tenant
 banco-por-loja** para os dados operacionais de cada vendedor.
 
-Diagramas C4 e demais modelos em [`docs/diagramas/`](docs/diagramas):
+**Exemplos de diagramas** (todos em PlantUML, em [`docs/diagramas/`](docs/diagramas)):
 
-- Contexto: [`c4-contexto.puml`](docs/diagramas/c4-contexto.puml)
-- Container: [`c4-container.puml`](docs/diagramas/c4-container.puml)
-- Componentes: [`componentes.puml`](docs/diagramas/componentes.puml)
-- Implantação: [`implantacao.puml`](docs/diagramas/implantacao.puml)
-- Documentação completa: [`docs/Documentacao-de-Projeto.md`](docs/Documentacao-de-Projeto.md)
+| Diagrama | Tipo | Arquivo |
+|----------|------|---------|
+| Contexto do sistema | C4 — Nível 1 | [`c4-contexto.puml`](docs/diagramas/c4-contexto.puml) |
+| Container | C4 — Nível 2 | [`c4-container.puml`](docs/diagramas/c4-container.puml) |
+| Componentes | UML Componentes | [`componentes.puml`](docs/diagramas/componentes.puml) |
+| Implantação (Docker Swarm) | UML Deployment | [`implantacao.puml`](docs/diagramas/implantacao.puml) |
+
+> Casos de uso, classes, sequência, comunicação, estados e ER estão na [documentação completa](docs/Documentacao-de-Projeto.md) e em `docs/diagramas/`.
 
 ## 🔧 Instalação e Execução
 
