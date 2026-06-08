@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="180" viewBox="0 0 420 180" role="img" aria-labelledby="title desc">
+  <title id="title">Logo do Hermes</title>
+  <desc id="desc">Marca acadêmica do sistema Hermes para gestão de vendedores Amazon.</desc>
+  <rect width="420" height="180" rx="24" fill="#0f172a"/>
+  <circle cx="92" cy="90" r="46" fill="#f59e0b"/>
+  <path d="M70 108V72h14v13h17V72h14v36h-14V95H84v13H70z" fill="#0f172a"/>
+  <path d="M158 65h156v14H158zM158 90h116v14H158zM158 115h142v14H158z" fill="#e2e8f0"/>
+  <text x="158" y="54" fill="#f8fafc" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">Hermes</text>
+  <text x="158" y="151" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="15">Amazon seller operations platform</text>
+</svg>

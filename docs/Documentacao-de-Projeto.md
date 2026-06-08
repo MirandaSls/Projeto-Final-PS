@@ -1,7 +1,7 @@
 # Documentação de Projeto para o Sistema Hermes
 
 **Versão:** 1.0
-**Autor:** `<seu nome / matrícula>`
+**Autor:** Arthur Miranda Sales
 **Data:** 08/06/2026
 
 ---
@@ -28,7 +28,7 @@
 
 | Nome | Data | Razões para Mudança | Versão |
 |------|------|---------------------|--------|
-| `<seu nome / matrícula>` | 08/06/2026 | Criação do documento a partir da extração factual do código-fonte do Hermes | 1.0 |
+| Arthur Miranda Sales | 08/06/2026 | Criação do documento a partir da análise factual do projeto Hermes | 1.0 |
 
 ---
 
@@ -52,10 +52,9 @@ organizado em nove módulos com **Clean Architecture** por módulo, **CQRS** via
 Server** com **EF Core 9**, incluindo estratégia **multi-tenant banco-por-loja**. As
 seções seguintes detalham cada modelo.
 
-> **Nota de fidelidade ao código:** este documento foi derivado da extração factual em
-> `HERMES_DOC_EXTRACTION.md`. Onde o enunciado original divergiu do código, prevaleceu
-> o código: a mensageria WhatsApp é a **W-API** (não "Evolution API") e o SGBD é **SQL
-> Server** (não PostgreSQL).
+> **Nota de fidelidade ao projeto:** onde versões preliminares da documentação divergiam
+> da arquitetura adotada, prevaleceram as decisões do projeto: a mensageria WhatsApp é a
+> **W-API** e o SGBD é **SQL Server**.
 
 ---
 

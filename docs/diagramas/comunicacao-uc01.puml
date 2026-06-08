@@ -3,13 +3,13 @@ title Diagrama de Comunicacao UC-01 - Conexao Amazon SP-API
 left to right direction
 
 actor Vendedor as V
-object "StoreConnectionController" as CTRL
-object "AuthorizeAmazonCommandHandler" as H
-object "IAmazonOAuthService" as OAUTH
-object "IAmazonConnectService" as CONN
-object "IAmazonSellerApiService" as SELLER
-object "IStoreService" as STORE
-object "IAmazonNotificationService" as NOTIF
+rectangle "StoreConnectionController" as CTRL
+rectangle "AuthorizeAmazonCommandHandler" as H
+rectangle "IAmazonOAuthService" as OAUTH
+rectangle "IAmazonConnectService" as CONN
+rectangle "IAmazonSellerApiService" as SELLER
+rectangle "IStoreService" as STORE
+rectangle "IAmazonNotificationService" as NOTIF
 database "StoreCentralDbContext" as DB
 
 V --> CTRL : 1: AuthorizeAmazon(code, state)

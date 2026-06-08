@@ -6,7 +6,7 @@
 
 | Visão Geral | Logo |
 |-------------|------|
-| **Hermes** é uma plataforma de gestão para *sellers* Amazon. Unifica conexão de loja (SP-API), publicidade (Amazon Ads), métricas financeiras, precificação automática e assinatura em um único produto. Projeto acadêmico individual de Engenharia de Software — PUC Minas. | `<placeholder — logo do projeto>` |
+| **Hermes** é uma plataforma de gestão para *sellers* Amazon. Unifica conexão de loja (SP-API), publicidade (Amazon Ads), métricas financeiras, precificação automática e assinatura em um único produto. Projeto acadêmico individual de Engenharia de Software — PUC Minas. | ![Logo do Hermes](docs/imagens/logo-hermes.svg) |
 
 ## 🚧 Status do Projeto
 
@@ -36,7 +36,7 @@
 
 ## 🔗 Links Úteis
 
-- **Demo:** `<placeholder — URL da demo>`
+- **Demo:** Não aplicável; este repositório documenta o projeto, a arquitetura e os diagramas.
 - **Documentação de Projeto:** [`docs/Documentacao-de-Projeto.md`](docs/Documentacao-de-Projeto.md)
 - **Portal:** `https://portal.hermess.app`
 
@@ -105,16 +105,16 @@ O Hermes é um **Monólito Modular** com **Clean Architecture** por módulo, **C
 `Keepa`, `OutBox`) com bancos separados, mais uma estratégia **multi-tenant
 banco-por-loja** para os dados operacionais de cada vendedor.
 
-**Exemplos de diagramas** (todos em PlantUML, em [`docs/diagramas/`](docs/diagramas)):
+**Exemplos de diagramas** (fontes em PlantUML em [`docs/diagramas/`](docs/diagramas) e imagens em [`docs/imagens/`](docs/imagens)):
 
-| Diagrama | Tipo | Arquivo |
-|----------|------|---------|
-| Contexto do sistema | C4 — Nível 1 | [`c4-contexto.puml`](docs/diagramas/c4-contexto.puml) |
-| Container | C4 — Nível 2 | [`c4-container.puml`](docs/diagramas/c4-container.puml) |
-| Componentes | UML Componentes | [`componentes.puml`](docs/diagramas/componentes.puml) |
-| Implantação (Docker Swarm) | UML Deployment | [`implantacao.puml`](docs/diagramas/implantacao.puml) |
+| Diagrama | Tipo | Imagem | Fonte |
+|----------|------|--------|-------|
+| Contexto do sistema | C4 — Nível 1 | [`c4-contexto.png`](docs/imagens/c4-contexto.png) | [`c4-contexto.puml`](docs/diagramas/c4-contexto.puml) |
+| Container | C4 — Nível 2 | [`c4-container.png`](docs/imagens/c4-container.png) | [`c4-container.puml`](docs/diagramas/c4-container.puml) |
+| Componentes | UML Componentes | [`componentes.png`](docs/imagens/componentes.png) | [`componentes.puml`](docs/diagramas/componentes.puml) |
+| Implantação (Docker Swarm) | UML Deployment | [`implantacao.png`](docs/imagens/implantacao.png) | [`implantacao.puml`](docs/diagramas/implantacao.puml) |
 
-> Casos de uso, classes, sequência, comunicação, estados e ER estão na [documentação completa](docs/Documentacao-de-Projeto.md) e em `docs/diagramas/`.
+> Casos de uso, classes, sequência, comunicação, estados e ER estão na [documentação completa](docs/Documentacao-de-Projeto.md), com fontes em `docs/diagramas/` e imagens em `docs/imagens/`.
 
 ## 🔧 Instalação e Execução
 
@@ -201,7 +201,8 @@ docker stack deploy -c docker-compose.yml hermes
 ├── frontend/                     # portal Next.js
 ├── docs/
 │   ├── Documentacao-de-Projeto.md
-│   └── diagramas/                # .puml (C4, casos de uso, sequência, estados, ER...)
+│   ├── diagramas/                # fontes .puml (C4, casos de uso, sequência, estados, ER...)
+│   └── imagens/                  # imagens .png geradas a partir dos diagramas PlantUML
 └── docker-compose.yml
 ```
 
@@ -209,11 +210,11 @@ docker stack deploy -c docker-compose.yml hermes
 
 ## 🎥 Demonstração
 
-| Tela | Preview |
-|------|---------|
-| Dashboard de Ads | `<placeholder — gif/screenshot>` |
-| Conexão de loja (OAuth SP-API) | `<placeholder — gif/screenshot>` |
-| Métricas de vendas | `<placeholder — gif/screenshot>` |
+| Artefato | Preview |
+|----------|---------|
+| Diagramas PlantUML renderizados | [`docs/imagens/`](docs/imagens) |
+| Documentação completa do projeto | [`docs/Documentacao-de-Projeto.md`](docs/Documentacao-de-Projeto.md) |
+| Fontes dos diagramas | [`docs/diagramas/`](docs/diagramas) |
 
 ## 🧪 Testes
 
@@ -236,7 +237,7 @@ dotnet test
 
 | Nome | Foto | GitHub | LinkedIn | Gmail |
 |------|------|--------|----------|-------|
-| `<seu nome>` | `<placeholder>` | `<github>` | `<linkedin>` | `<gmail>` |
+| Arthur Miranda Sales | ![Logo do Hermes](docs/imagens/logo-hermes.svg) | [MirandaSls](https://github.com/MirandaSls) | Não informado | `arthursaleszv@gmail.com` |
 
 ## 🤝 Contribuição
 
